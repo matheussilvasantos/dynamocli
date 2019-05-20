@@ -1,1 +1,0 @@
-RSpec.describe Dynamorb

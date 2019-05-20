@@ -1,11 +1,11 @@
-# Dynamorb
+# Dynamocli
 
 Utilites for interaction with your DynamoDB tables (only importation of data from a CSV file to a table is available for now).
 
 ## Installation
 
 ```
-gem install dynamorb
+gem install dynamocli
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ You have to configure AWS in your computer first. The program will use the AWS c
 After install the program you will be able to run:
 
 ```
-dynamorb import your_data.csv --to your_table
+dynamocli import your_data.csv --to your_table
 ```
 
 ## Development
@@ -26,7 +26,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/matheussilvasantos/dynamorb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/matheussilvasantos/dynamocli. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -34,4 +34,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Dynamorb project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/matheussilvasantos/dynamorb/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Dynamocli project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/matheussilvasantos/dynamocli/blob/master/CODE_OF_CONDUCT.md).

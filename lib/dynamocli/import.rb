@@ -2,7 +2,7 @@ require "thor"
 require "csv"
 require "aws-sdk-dynamodb"
 
-class Dynamorb::Import
+class Dynamocli::Import
   SUPPORTED_FILE_FORMATS = ["CSV"]
 
   def initialize(file:, table:)

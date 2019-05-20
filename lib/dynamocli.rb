@@ -1,7 +1,7 @@
-require "dynamorb/version"
-require "dynamorb/import"
+require "dynamocli/version"
+require "dynamocli/import"
 
-module Dynamorb
+module Dynamocli
   class Client < Thor
     desc "import FILE", "import data from FILE to dynamodb"
     long_desc <<-LONGDESC
@@ -12,7 +12,7 @@ module Dynamorb
     LONGDESC
     option :to, required: true, desc: "table you want to import the data", banner: "TABLE", aliases: ["-t", "--table"]
     def import(file)
-      Dynamorb::Import.new(file: file, table: options[:to]).start
+      Dynamocli::Import.new(file: file, table: options[:to]).start
     end
   end
 end

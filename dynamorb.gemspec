@@ -1,15 +1,15 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "dynamorb/version"
+require "dynamocli/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "dynamorb"
-  spec.version       = Dynamorb::VERSION
+  spec.name          = "dynamocli"
+  spec.version       = Dynamocli::VERSION
   spec.authors       = ["Matheus Silva Santos de Oliveira"]
   spec.email         = ["oliveira.matheussilvasantos@gmail.com"]
 
   spec.summary       = %q{Utilities for interaction with AWS DynamoDB}
-  spec.homepage      = "https://github.com/matheussilvasantos/dynamorb"
+  spec.homepage      = "https://github.com/matheussilvasantos/dynamocli"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
