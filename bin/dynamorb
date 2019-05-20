@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "dynamorb"
+
+Dynamorb::Client.start(ARGV)
