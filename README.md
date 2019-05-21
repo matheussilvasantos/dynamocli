@@ -12,7 +12,7 @@ gem install dynamocli
 
 You have to configure AWS in your computer first. The program will use the AWS credentials configured in your computer.
 
-After install the program you will be able to run:
+- Import data from a CSV file to a DynamoDB table:
 
 ```
 dynamocli import your_data.csv --to your_table
