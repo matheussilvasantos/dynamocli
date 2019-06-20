@@ -1,4 +1,3 @@
-require "thor"
 require "csv"
 require "aws-sdk-dynamodb"
 

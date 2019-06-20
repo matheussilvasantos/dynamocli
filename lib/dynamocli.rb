@@ -1,3 +1,4 @@
+require "thor"
 require "dynamocli/version"
 require "dynamocli/import"
 require "dynamocli/erase"
