@@ -28,7 +28,7 @@ module Dynamocli
 
       > $ dynamo erase users
     LONGDESC
-    option "with-drift", desc: "drop the table and recreate it even if it's in a stack", type: :boolean
+    option "with-drift", desc: "drop the table and recreate it directly instead of use deployments", type: :boolean
     def erase(table)
       Dynamocli::Erase.new(table_name: table, with_drift: options["with-drift"]).start
     end
