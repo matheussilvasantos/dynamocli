@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dynamocli (0.1.0)
+    dynamocli (0.1.2)
       aws-sdk-cloudformation
       aws-sdk-dynamodb (~> 1.28)
       thor (~> 0.20)
