@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Command to erase a DynamoDB table.
 
-## [0.1.1] - 2019-05-21 [YANKED]
+## 0.1.1 - 2019-05-21 [YANKED]
 
 ## [0.1.0] - 2019-05-20
 ### Added
