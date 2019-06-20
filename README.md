@@ -1,6 +1,6 @@
 # Dynamocli
 
-Utilites for interaction with your DynamoDB tables (only importation of data from a CSV file to a table is available for now).
+Utilites for interaction with your DynamoDB tables.
 
 ## Installation
 
@@ -10,13 +10,51 @@ gem install dynamocli
 
 ## Usage
 
+
 You have to configure AWS in your computer first. The program will use the AWS credentials configured in your computer.
 
-- Import data from a CSV file to a DynamoDB table:
+- Import data from a CSV file to a DynamoDB table
 
 ```
-dynamocli import your_data.csv --to your_table
+Usage:
+  dynamocli import FILE -t, --table, --to=TABLE
+
+Options:
+  -t, --table, --to=TABLE  # table you want to import the data
+
+Description:
+  `dynamocli import` will import the data in from a file to a table specified.
+
+  > $ dynamo import users.csv --to users
+
 ```
+
+- Erase all the data of a DynamoDB table
+
+```
+Usage:
+  dynamocli erase TABLE
+
+Options:
+  [--with-drift], [--no-with-drift]  # drop the table and
+  recreate it directly instead of use deployments
+
+Description:
+  `dynamocli erase` will erase all the data of the specified table.
+
+  It will drop the table and recreate it.
+
+  If the table is in a stack it will try to deploy
+  the stack without the table and then redeploy the
+  stack with the original template. You can change
+  this behavior passing the option --with-drift.
+
+  > $ dynamo erase users
+```
+
+From the DynamoDB Guidelines for Working with Tables documentation:
+
+> Deleting an entire table is significantly more efficient than removing items one-by-one, which essentially doubles the write throughput as you do as many delete operations as put operations.
 
 ## Development
 
