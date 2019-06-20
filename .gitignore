@@ -13,3 +13,5 @@
 .byebug_history
 
 *.gem
+
+*.swp
