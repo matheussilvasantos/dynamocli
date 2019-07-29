@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require "csv"
+require "tty-logger"
 require "aws-sdk-dynamodb"
 
 class Dynamocli::Import
+  LOGGER = TTY::Logger.new
   SUPPORTED_FILE_FORMATS = ["CSV"]
 
   def initialize(file:, table:)
@@ -25,7 +27,7 @@ class Dynamocli::Import
     when ".csv"
       records_from_csv(@file)
     else
-      STDERR.puts "ERROR: Not supported file format. Only supported file formats are: #{SUPPORTED_FILE_FORMATS}"
+      LOGGER.error("Not supported file format. Only supported file formats are: #{SUPPORTED_FILE_FORMATS}")
       exit(42)
     end
   end
