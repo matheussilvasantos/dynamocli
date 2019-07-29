@@ -2,10 +2,13 @@
 
 require "json"
 require "yaml"
+require "tty-logger"
 require "aws-sdk-dynamodb"
 require "aws-sdk-cloudformation"
 
 class Dynamocli::Erase
+  LOGGER = TTY::Logger.new
+
   def initialize(table_name:, with_drift: false)
     @with_drift = with_drift
     @table_name = table_name
@@ -20,7 +23,7 @@ class Dynamocli::Erase
 
     set_stack_information
   rescue Aws::DynamoDB::Errors::ResourceNotFoundException => e
-    STDERR.puts "ERROR: #{e.message}"
+    LOGGER.error(e.message)
     exit(42)
   rescue Aws::CloudFormation::Errors::ValidationError
     @stack_resources = nil
@@ -29,7 +32,7 @@ class Dynamocli::Erase
   def start
     erase_table
   rescue Aws::CloudFormation::Errors::ValidationError => e
-    STDERR.puts "ERROR: #{e.message}"
+    LOGGER.error(e.message)
     exit(42)
   end
 
@@ -44,6 +47,13 @@ class Dynamocli::Erase
       schema.delete(:table_arn)
       schema.delete(:table_id)
       schema[:provisioned_throughput].delete(:number_of_decreases_today)
+      schema[:global_secondary_indexes].each do |gsis|
+        gsis.delete(:index_status)
+        gsis.delete(:index_size_bytes)
+        gsis.delete(:item_count)
+        gsis.delete(:index_arn)
+        gsis[:provisioned_throughput].delete(:number_of_decreases_today)
+      end
     end
   end
   
@@ -54,7 +64,7 @@ class Dynamocli::Erase
     set_stack
     set_templates
   rescue Aws::CloudFormation::Errors::ValidationError => e
-    STDERR.puts "ERROR: #{e.message}"
+    LOGGER.error(e.message)
     exit(42)
   end
 
@@ -78,7 +88,7 @@ class Dynamocli::Erase
     table = tables.find { |_, v| v["Properties"]["TableName"] == @table_name }
 
     if tables.nil?
-      STDERR.puts "ERROR: table #{@table_name} not found in the #{@stack_name} stack"
+      LOGGER.error("table #{@table_name} not found in the #{@stack_name} stack")
       exit(42)
     end
 
@@ -103,21 +113,21 @@ class Dynamocli::Erase
   end
 
   def check_if_user_wants_to_continue_with_recreation
-    STDOUT.print(
-      "WARNING: You're going to drop and recreate your #{@table_name} table,\n" \
-      "do you really want to continue?\n" \
-      "(anything other than 'y' will cancel) > "
+    LOGGER.warn(
+      "You're going to drop and recreate your #{@table_name} table,\n" \
+      "do you really want to continue?"
     )
+    STDOUT.print("(anything other than 'y' will cancel) > ")
 
     confirmation = STDIN.gets.strip
     return if confirmation == "y"
 
-    STDOUT.puts abort_message
+    LOGGER.info(abort_message)
     exit(0)
   end
 
   def abort_message
-    "INFO: Erase of #{@table_name} table canceled"
+    "Erase of #{@table_name} table canceled"
   end
 
   def delete_and_recreate_the_table
@@ -127,17 +137,17 @@ class Dynamocli::Erase
   end
 
   def delete_table
-    STDOUT.puts "INFO: Deleting the #{@table_name} table"
+    LOGGER.info("Deleting the #{@table_name} table")
 
     @table.delete
 
-    STDOUT.puts "INFO: #{@table_name} table deleted"
+    LOGGER.success("#{@table_name} table deleted")
   end
 
   def wait_for_deletion_to_complete
     waiting_seconds = 0
     while get_table_status == "DELETING"
-      STDOUT.puts "INFO: Waiting for deletion to complete"
+      LOGGER.info("Waiting for deletion to complete")
       sleep waiting_seconds += 1
     end
   rescue Aws::DynamoDB::Errors::ResourceNotFoundException
@@ -149,24 +159,24 @@ class Dynamocli::Erase
   end
 
   def create_table
-    STDOUT.puts "INFO: Creating the #{@table_name} table"
+    LOGGER.info("Creating the #{@table_name} table")
 
     @dynamodb.create_table(@schema)
 
-    STDOUT.puts "INFO: #{@table_name} table created"
+    LOGGER.success("#{@table_name} table created")
   end
   
   def check_if_user_wants_to_continue_with_deployment
-    STDOUT.print(
-      "WARNING: You are going to deploy and redeploy your #{@stack_name} stack\n" \
-      "to drop and recreate the #{@table_name} table, do you really want to continue?\n" \
-      "(anything other than 'y' will cancel) > "
+    LOGGER.warn(
+      "You are going to deploy and redeploy your #{@stack_name} stack\n" \
+      "to drop and recreate the #{@table_name} table, do you really want to continue?"
     )
+    STDOUT.print("(anything other than 'y' will cancel) > ")
 
     confirmation = STDIN.gets.strip
     return if confirmation == "y"
 
-    STDOUT.puts abort_message
+    LOGGER.info(abort_message)
     exit(0)
   end
 
@@ -177,7 +187,7 @@ class Dynamocli::Erase
   end
 
   def deploy_stack_without_the_table
-    STDOUT.puts "INFO: Deploying the stack without the #{@table_name} table"
+    LOGGER.info("Deploying the stack without the #{@table_name} table")
 
     @cloudformation.update_stack(
       stack_name: @stack_name,
@@ -191,7 +201,7 @@ class Dynamocli::Erase
       tags: @stack.tags.map(&:to_h)
     )
 
-    STDOUT.puts "INFO: Stack deployed without the #{@table_name} table"
+    LOGGER.success("Stack deployed without the #{@table_name} table")
   end
 
   def get_stack_policy_body
@@ -201,7 +211,7 @@ class Dynamocli::Erase
   def wait_for_deployment_to_complete
     waiting_seconds = 0
     while get_stack_status != "UPDATE_COMPLETE"
-      STDOUT.puts "INFO: Waiting for deployment to complete"
+      LOGGER.info("Waiting for deployment to complete")
       sleep waiting_seconds += 1
     end
   end
@@ -211,7 +221,7 @@ class Dynamocli::Erase
   end
 
   def deploy_stack_with_the_original_template
-    STDOUT.puts "INFO: Deploying the stack with the #{@table_name} table"
+    LOGGER.info("Deploying the stack with the #{@table_name} table")
 
     @cloudformation.update_stack(
       stack_name: @stack_name,
@@ -225,6 +235,6 @@ class Dynamocli::Erase
       tags: @stack.tags.map(&:to_h)
     )
 
-    STDOUT.puts "INFO: Stack deployed with the #{@table_name} table"
+    LOGGER.success("Stack deployed with the #{@table_name} table")
   end
 end
