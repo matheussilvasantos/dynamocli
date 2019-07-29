@@ -44,6 +44,13 @@ class Dynamocli::Erase
       schema.delete(:table_arn)
       schema.delete(:table_id)
       schema[:provisioned_throughput].delete(:number_of_decreases_today)
+      schema[:global_secondary_indexes].each do |gsis|
+        gsis.delete(:index_status)
+        gsis.delete(:index_size_bytes)
+        gsis.delete(:item_count)
+        gsis.delete(:index_arn)
+        gsis[:provisioned_throughput].delete(:number_of_decreases_today)
+      end
     end
   end
   
