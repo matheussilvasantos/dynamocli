@@ -11,6 +11,7 @@ class Dynamocli::Import
   def initialize(file:, table:)
     @file = file
     @table = table
+    @dynamodb = Aws::DynamoDB::Client.new
   end
 
   def start
@@ -33,16 +34,29 @@ class Dynamocli::Import
   end
 
   def records_from_csv(csv)
-    csv_options = { encoding: "UTF-8", headers: true, header_converters: :symbol, converters: :all }
+    set_custom_converter_for_csv
+    csv_options = { encoding: "UTF-8", headers: true, converters: :attribute_definitions }
     records_csv = CSV.read(csv, csv_options)
     records_csv.map(&:to_hash)
   end
 
-  def write_records_to_dynamodb_table(records)
-    dynamodb = Aws::DynamoDB::Client.new
+  ATTRIBUTE_TYPES_CONVERTERS = {
+    "S" => :to_s.to_proc,
+    "N" => :to_i.to_proc,
+    "B" => Proc.new(&StringIO.method(:new))
+  }
+  def set_custom_converter_for_csv
+    attribute_definitions = @dynamodb.describe_table(table_name: @table).table.attribute_definitions
+    CSV::Converters[:attribute_definitions] = lambda do |value, info|
+      attribute_definition = attribute_definitions.find { |it| it.attribute_name == info.header }
+      return value if attribute_definition.nil?
+      ATTRIBUTE_TYPES_CONVERTERS[attribute_definition.attribute_type].call(value)
+    end
+  end
 
+  def write_records_to_dynamodb_table(records)
     slice_items_to_attend_batch_write_limit(records).each do |items|
-      dynamodb.batch_write_item(request_items: format_request_items(items))
+      @dynamodb.batch_write_item(request_items: format_request_items(items))
     end
   end
 
