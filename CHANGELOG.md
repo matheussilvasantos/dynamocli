@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2019-08-08
+### Fixed
+- Fix erase table without GSIs.
+- Fix erase table with LCIs.
+- Fix import data to a table with attributes types other than String.
+
 ## [0.1.4] - 2019-07-29
 ### Fixed
 - Fix erase table with indexes.
@@ -23,6 +29,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Command to import data from a CSV file to a DynamoDB table.
 
+[0.1.5]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/matheussilvasantos/dynamocli/commit/6fd76a06819ff32464eeeae1f097bccd33f21387
