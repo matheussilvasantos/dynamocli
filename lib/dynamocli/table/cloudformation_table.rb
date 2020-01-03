@@ -26,9 +26,6 @@ module Dynamocli::Table
       deploy_stack_without_the_table
       wait_for_deployment_to_complete
       deploy_stack_with_the_original_template
-    rescue Aws::CloudFormation::Errors::ValidationError => e
-      logger.error(e.message)
-      exit(42)
     end
 
     private
