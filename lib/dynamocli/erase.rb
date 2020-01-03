@@ -5,6 +5,7 @@ require "aws-sdk-dynamodb"
 require "aws-sdk-cloudformation"
 require "dynamocli/table/cloudformation_table"
 require "dynamocli/table/standalone_table"
+require "dynamocli/aws/erase"
 
 class Dynamocli::Erase
   LOGGER = TTY::Logger.new
@@ -63,7 +64,8 @@ class Dynamocli::Erase
     @dynamocli_table ||= if stack_resources.nil? || with_drift?
       Dynamocli::Table::StandaloneTable.new(table_name: table_name, table: table)
     else
-      Dynamocli::Table::CloudformationTable.new(table_name: table_name, table_resource: table_resource)
+      stack = Dynamocli::AWS::Stack.new(table_name: table_name, table_resource: table_resource)
+      Dynamocli::Table::CloudformationTable.new(table_name: table_name, stack: stack)
     end
   end
 
