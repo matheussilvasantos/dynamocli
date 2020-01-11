@@ -49,4 +49,10 @@ RSpec.describe Dynamocli::Table::CloudformationTable do
       end
     end
   end
+
+  describe "#alert_message_before_continue" do
+    it "returns a message as a String" do
+      expect(subject.alert_message_before_continue).to be_a(String)
+    end
+  end
 end
