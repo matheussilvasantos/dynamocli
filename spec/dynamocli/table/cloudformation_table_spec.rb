@@ -23,7 +23,7 @@ RSpec.describe Dynamocli::Table::CloudformationTable do
         allow(stack).to receive(:template_without_table).and_return(template_without_table)
       end
 
-      it "calls the update_stack method in the cloudformation library with the template without the table" do
+      it "calls the update_stack method in the CloudFormation library passing the template without the table" do
         expect(cloudformation).to receive(:update_stack).with(hash_including(template_body: template_without_table.to_json))
         subject.erase
       end
@@ -43,7 +43,7 @@ RSpec.describe Dynamocli::Table::CloudformationTable do
         subject.erase
       end
 
-      it "calls the update_stack method in the cloudformation library with the original template" do
+      it "calls the update_stack method in the CloudFormation library passing the original template" do
         expect(cloudformation).to receive(:update_stack).with(hash_including(template_body: original_template.to_json))
         subject.erase
       end
