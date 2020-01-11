@@ -7,8 +7,6 @@ require "yaml"
 
 module Dynamocli::Table
   class CloudformationTable
-    CLOUDFORMARTION = Aws::CloudFormation::Client
-    LOGGER = TTY::Logger
     DEPLOY_COMPLETED_KEY = "UPDATE_COMPLETE"
 
     def initialize(table_name:, stack:, cloudformation: nil, logger: nil)
@@ -29,6 +27,10 @@ module Dynamocli::Table
     end
 
     private
+
+    CLOUDFORMARTION = Aws::CloudFormation::Client
+    LOGGER = TTY::Logger
+    private_constant :CLOUDFORMARTION, :LOGGER
 
     attr_reader :table_name, :stack, :cloudformation, :logger
 

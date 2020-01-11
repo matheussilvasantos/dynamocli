@@ -2,8 +2,8 @@ require "dynamocli/table/cloudformation_table"
 
 RSpec.describe Dynamocli::Table::CloudformationTable do
   let(:stack) { double("Dynamocli::AWS::Stack").as_null_object }
-  let(:cloudformation) { instance_double(described_class::CLOUDFORMARTION).as_null_object }
-  let(:logger) { instance_double(described_class::LOGGER).as_null_object }
+  let(:cloudformation) { instance_double("Aws::CloudFormation::Client").as_null_object }
+  let(:logger) { instance_double("TTY::Logger").as_null_object }
 
   subject do
     described_class.new(
