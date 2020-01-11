@@ -5,7 +5,7 @@ require "aws-sdk-dynamodb"
 require "aws-sdk-cloudformation"
 require "dynamocli/table/cloudformation_table"
 require "dynamocli/table/standalone_table"
-require "dynamocli/aws/erase"
+require "dynamocli/aws/stack"
 
 class Dynamocli::Erase
   LOGGER = TTY::Logger.new
