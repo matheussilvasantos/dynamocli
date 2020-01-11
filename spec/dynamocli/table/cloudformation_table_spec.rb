@@ -19,7 +19,7 @@ RSpec.describe Dynamocli::Table::CloudformationTable do
       let(:template_without_table) { "Pretend I am the template without the table." }
 
       before do
-        allow(stack).to receive(:current_status).and_return(described_class::DEPLOY_COMPLETED_KEY)
+        allow(stack).to receive(:deploying?).and_return(false)
         allow(stack).to receive(:template_without_table).and_return(template_without_table)
       end
 
@@ -34,7 +34,7 @@ RSpec.describe Dynamocli::Table::CloudformationTable do
 
       before do
         allow(subject).to receive(:sleep)
-        allow(stack).to receive(:current_status).and_return("foobar", described_class::DEPLOY_COMPLETED_KEY)
+        allow(stack).to receive(:deploying?).and_return(true, false)
         allow(stack).to receive(:original_template).and_return(original_template)
       end
 

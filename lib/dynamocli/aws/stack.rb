@@ -2,9 +2,6 @@ require 'forwardable'
 
 module Dynamocli::AWS
   class Stack
-    CLOUDFORMARTION = Aws::CloudFormation::Client
-    LOGGER = TTY::Logger
-
     attr_reader :name, :resources, :template_body, :original_template, :template_without_table, :policy_body
 
     extend Forwardable
@@ -20,11 +17,16 @@ module Dynamocli::AWS
       set_attributes_now_because_they_will_change
     end
 
-    def current_status
-      cloudformation.describe_stacks(stack_name: stack_name)[0][0].stack_status
+    def deploying?
+      current_status != DEPLOY_COMPLETED_KEY
     end
 
     private
+
+    CLOUDFORMARTION = Aws::CloudFormation::Client
+    LOGGER = TTY::Logger
+    DEPLOY_COMPLETED_KEY = "UPDATE_COMPLETE"
+    private_constant :CLOUDFORMARTION, :LOGGER, :DEPLOY_COMPLETED_KEY
 
     attr_reader :stack_on_aws
 
@@ -81,6 +83,10 @@ module Dynamocli::AWS
 
     def set_policy_body
       @policy_body ||= cloudformation.get_stack_policy(stack_name: name).stack_policy_body
+    end
+
+    def current_status
+      cloudformation.describe_stacks(stack_name: stack_name)[0][0].stack_status
     end
   end
 end

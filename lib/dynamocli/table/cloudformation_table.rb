@@ -7,8 +7,6 @@ require "yaml"
 
 module Dynamocli::Table
   class CloudformationTable
-    DEPLOY_COMPLETED_KEY = "UPDATE_COMPLETE"
-
     def initialize(table_name:, stack:, cloudformation: nil, logger: nil)
       @table_name = table_name
       @stack = stack
@@ -54,7 +52,7 @@ module Dynamocli::Table
 
     def wait_for_deployment_to_complete
       waiting_seconds = 0
-      while stack.current_status != DEPLOY_COMPLETED_KEY
+      while stack.deploying?
         logger.info("Waiting for deployment to complete")
         sleep waiting_seconds += 1
       end
