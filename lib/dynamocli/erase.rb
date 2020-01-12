@@ -27,7 +27,9 @@ class Dynamocli::Erase
 
   def start
     erase_table
-  rescue Aws::CloudFormation::Errors::ValidationError => e
+  rescue Aws::CloudFormation::Errors::ValidationError,
+         Aws::DynamoDB::Errors::ValidationException,
+         Aws::DynamoDB::Errors::ResourceNotFoundException => e
     LOGGER.error(e.message)
     exit(42)
   end
