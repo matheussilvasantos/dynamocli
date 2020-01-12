@@ -13,8 +13,8 @@ module Dynamocli::AWS
     def initialize(table_name:, table_resource:, cloudformation: nil, logger: nil)
       @table_name = table_name
       @table_resource = table_resource
-      @cloudformation = cloudformation ||= CLOUDFORMARTION.new
-      @logger = logger ||= LOGGER.new
+      @cloudformation = cloudformation || CLOUDFORMARTION.new
+      @logger = logger || LOGGER.new
 
       set_attributes_now_because_they_will_change
     end

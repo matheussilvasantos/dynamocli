@@ -10,8 +10,8 @@ module Dynamocli::Table
     def initialize(table_name:, stack:, cloudformation: nil, logger: nil)
       @table_name = table_name
       @stack = stack
-      @cloudformation = cloudformation ||= CLOUDFORMARTION.new
-      @logger = logger ||= LOGGER.new
+      @cloudformation = cloudformation || CLOUDFORMARTION.new
+      @logger = logger || LOGGER.new
     end
 
     def alert_message_before_continue
