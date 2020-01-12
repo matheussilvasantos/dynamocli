@@ -9,8 +9,6 @@ require "dynamocli/aws/stack"
 require "dynamocli/aws/table"
 
 class Dynamocli::Erase
-  LOGGER = TTY::Logger.new
-
   def initialize(table_name:, with_drift: false)
     @with_drift = with_drift
     @table_name = table_name
@@ -35,6 +33,9 @@ class Dynamocli::Erase
   end
 
   private
+
+  LOGGER = TTY::Logger.new
+  private_constant :LOGGER
 
   attr_reader :table_name, :table_on_aws, :stack_resources
 
