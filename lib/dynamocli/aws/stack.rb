@@ -28,7 +28,7 @@ module Dynamocli::AWS
     DEPLOY_COMPLETED_KEY = "UPDATE_COMPLETE"
     private_constant :CLOUDFORMARTION, :LOGGER, :DEPLOY_COMPLETED_KEY
 
-    attr_reader :stack_on_aws
+    attr_reader :table_name, :table_resource, :cloudformation, :logger, :stack_on_aws
 
     def set_attributes_now_because_they_will_change
       set_name
@@ -40,8 +40,8 @@ module Dynamocli::AWS
       set_policy_body
     end
 
-    def set_stack_name
-      @name ||= table_resource[:name]
+    def set_name
+      @name ||= table_resource[:stack_name]
     end
 
     def set_stack_on_aws
@@ -53,7 +53,7 @@ module Dynamocli::AWS
     end
 
     def set_template_body
-      @template_body ||= @cloudformation.get_template(stack_name: @name).to_h[:template_body]
+      @template_body ||= cloudformation.get_template(stack_name: name).to_h[:template_body]
     end
 
     def set_original_template
@@ -63,10 +63,10 @@ module Dynamocli::AWS
     def set_template_without_table
       @template_without_table ||= parse_template(template_body).tap do |template_without_table|
         tables = original_template["Resources"].select { |_, v| v["Type"] == "AWS::DynamoDB::Table" }
-        table = tables.find { |_, v| v["Properties"]["TableName"] == @table_name }
+        table = tables.find { |_, v| v["Properties"]["TableName"] == table_name }
 
         if tables.nil?
-          logger.error("table #{@table_name} not found in the #{@name} stack")
+          logger.error("table #{table_name} not found in the #{@name} stack")
           exit(42)
         end
 
@@ -86,7 +86,7 @@ module Dynamocli::AWS
     end
 
     def current_status
-      cloudformation.describe_stacks(stack_name: stack_name)[0][0].stack_status
+      cloudformation.describe_stacks(stack_name: name)[0][0].stack_status
     end
   end
 end
