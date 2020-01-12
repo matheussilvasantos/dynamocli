@@ -6,6 +6,7 @@ require "aws-sdk-cloudformation"
 require "dynamocli/table/cloudformation_table"
 require "dynamocli/table/standalone_table"
 require "dynamocli/aws/stack"
+require "dynamocli/aws/table"
 
 class Dynamocli::Erase
   LOGGER = TTY::Logger.new
@@ -16,7 +17,7 @@ class Dynamocli::Erase
 
     @dynamodb = Aws::DynamoDB::Client.new
     @cloudformation = Aws::CloudFormation::Client.new
-    @table = Aws::DynamoDB::Table.new(@table_name)
+    @table_on_aws = Aws::DynamoDB::Table.new(@table_name)
 
     @stack_resources = @cloudformation.describe_stack_resources(physical_resource_id: @table_name).to_h
   rescue Aws::DynamoDB::Errors::ResourceNotFoundException => e
@@ -35,7 +36,7 @@ class Dynamocli::Erase
 
   private
 
-  attr_reader :table_name, :table, :stack_resources
+  attr_reader :table_name, :table_on_aws, :stack_resources
 
   def erase_table
     check_if_user_wants_to_continue
@@ -44,8 +45,8 @@ class Dynamocli::Erase
 
   def check_if_user_wants_to_continue
     LOGGER.warn(
-      "#{dynamocli_table.alert_message_before_continue},\n" \
-      "do you really want to continue?"
+      "#{dynamocli_table.alert_message_before_continue} " \
+      "Do you really want to continue?"
     )
     STDOUT.print("(anything other than 'y' will cancel) > ")
 
@@ -61,12 +62,14 @@ class Dynamocli::Erase
   end
 
   def dynamocli_table
-    @dynamocli_table ||= if stack_resources.nil? || with_drift?
-      Dynamocli::Table::StandaloneTable.new(table_name: table_name, table: table)
-    else
-      stack = Dynamocli::AWS::Stack.new(table_name: table_name, table_resource: table_resource)
-      Dynamocli::Table::CloudformationTable.new(table_name: table_name, stack: stack)
-    end
+    @dynamocli_table ||=
+      if stack_resources.nil? || with_drift?
+        table = Dynamocli::AWS::Table.new(table_name: table_name, table_on_aws: table_on_aws)
+        Dynamocli::Table::StandaloneTable.new(table_name: table_name, table: table)
+      else
+        stack = Dynamocli::AWS::Stack.new(table_name: table_name, table_resource: table_resource)
+        Dynamocli::Table::CloudformationTable.new(table_name: table_name, stack: stack)
+      end
   end
 
   def with_drift?
