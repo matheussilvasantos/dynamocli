@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require "forwardable"
+require "aws-sdk-dynamodb"
 
 module Dynamocli::AWS
   class Table

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-require 'forwardable'
+require "forwardable"
+require "json"
+require "yaml"
+require "aws-sdk-cloudformation"
+require "tty-logger"
 
 module Dynamocli::AWS
   class Stack

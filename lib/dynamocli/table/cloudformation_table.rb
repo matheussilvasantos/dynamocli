@@ -2,8 +2,6 @@
 
 require "aws-sdk-cloudformation"
 require "tty-logger"
-require "json"
-require "yaml"
 
 module Dynamocli::Table
   class CloudformationTable
