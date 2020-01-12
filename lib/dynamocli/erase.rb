@@ -18,9 +18,6 @@ class Dynamocli::Erase
     @table_on_aws = Aws::DynamoDB::Table.new(@table_name)
 
     @stack_resources = @cloudformation.describe_stack_resources(physical_resource_id: @table_name).to_h
-  rescue Aws::DynamoDB::Errors::ResourceNotFoundException => e
-    LOGGER.error(e.message)
-    exit(42)
   rescue Aws::CloudFormation::Errors::ValidationError
     @stack_resources = nil
   end
