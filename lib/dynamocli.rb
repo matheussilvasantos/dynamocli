@@ -13,8 +13,9 @@ module Dynamocli
       > $ dynamo import users.csv --to users
     LONGDESC
     option :to, required: true, desc: "table you want to import the data", banner: "TABLE", aliases: ["-t", "--table"]
+    option "exported-from-aws", desc: "modify the headers before importing the csv", type: :boolean
     def import(file)
-      Dynamocli::Import.new(file: file, table: options[:to]).start
+      Dynamocli::Import.new(file: file, table: options[:to], exported_from_aws: options["exported-from-aws"]).start
     end
 
     desc "erase TABLE", "erase all the data from the DynamoDB TABLE"
