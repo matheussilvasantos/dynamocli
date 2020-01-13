@@ -59,6 +59,16 @@ From the DynamoDB Guidelines for Working with Tables documentation:
 
 > Deleting an entire table is significantly more efficient than removing items one-by-one, which essentially doubles the write throughput as you do as many delete operations as put operations.
 
+## Known Issues
+
+### Importing a CSV file with arrays and objects as values in it
+
+Unfortunately, at this moment, this library cannot properly import array and objects. These values will appear as strings in the DynamoDB table.
+
+## Cross account or multiple profiles usage
+
+You can run `dynamocli` passing the `AWS_PROFILE` environment variable with the profile you want to use, for example: `AWS_PROFILE=nondefaultprofile dynamocli erase users`.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
