@@ -15,12 +15,15 @@ You have to configure AWS in your computer first. The program will use the AWS c
 
 - Import data from a CSV file to a DynamoDB table
 
+If you have exported the CSV file you want to import from AWS DynamoDB console, you probaly want to modify the headers before importing the CSV file, because AWS exports the CSV file with a symbol indicating the type of the field in the header. You can pass the option `--exported-from-aws` to do that, the default is false.
+
 ```
 Usage:
   dynamocli import FILE -t, --table, --to=TABLE
 
 Options:
-  -t, --table, --to=TABLE  # table you want to import the data
+  -t, --table, --to=TABLE                                  # table you want to import the data
+          [--exported-from-aws], [--no-exported-from-aws]  # modify the headers before importing the csv
 
 Description:
   `dynamocli import` will import the data in from a file to a table specified.
