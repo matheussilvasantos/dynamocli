@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5] - 2020-01-13
+### Added
+- Option to import data from a CSV exported from AWS.
+
+### Changed
+- Big refactoring in erase functionality.
+
 ## [0.1.5] - 2019-08-08
 ### Fixed
 - Fix erase table without GSIs.
@@ -29,6 +36,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Command to import data from a CSV file to a DynamoDB table.
 
+[0.1.6]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.2...v0.1.3
