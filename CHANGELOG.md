@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.8] - 2020-08-18
+### Changed
+- Update Rack.
+
+## [0.1.7] - 2020-08-18
+### Changed
+- Add what Ruby version is required.
+
 ## [0.1.6] - 2020-01-13
 ### Added
 - Option to import data from a CSV exported from AWS.
@@ -36,6 +44,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Command to import data from a CSV file to a DynamoDB table.
 
+[0.1.8]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.7...v0.1.8
+[0.1.7]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/matheussilvasantos/dynamocli/compare/v0.1.3...v0.1.4
