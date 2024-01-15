@@ -38,6 +38,8 @@ module Dynamocli::AWS
 
     def set_schema_before_we_delete_the_table
       @schema ||= dynamodb.describe_table(table_name: table_name).to_h[:table].tap do |schema|
+        schema[:table_class] = schema.dig(:table_class_summary, :table_class)
+        schema.delete(:table_class_summary)
         schema.delete(:table_status)
         schema.delete(:creation_date_time)
         schema.delete(:table_size_bytes)
