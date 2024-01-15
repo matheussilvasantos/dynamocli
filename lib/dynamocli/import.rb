@@ -43,7 +43,7 @@ class Dynamocli::Import
   def records_from_csv(csv)
     set_custom_converter_for_csv
     csv_options = { encoding: "UTF-8", headers: true, converters: :attribute_definitions }
-    records_csv = CSV.read(csv, csv_options)
+    records_csv = CSV.read(csv, **csv_options)
     if exported_from_aws?
       transform_records_csv_from_aws(records_csv)
     else

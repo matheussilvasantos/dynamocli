@@ -20,14 +20,15 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = spec.files.grep(%r{^bin/dynamocli}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = ">= 2.3"
+  spec.required_ruby_version = ">= 2.4"
 
-  spec.add_dependency "thor", "~> 0.20"
-  spec.add_dependency "aws-sdk-dynamodb", "~> 1.28"
-  spec.add_dependency "aws-sdk-cloudformation", "~> 1.23"
-  spec.add_dependency "tty-logger", "~> 0.1.0"
+  spec.add_dependency "thor"
+  spec.add_dependency "ox"
+  spec.add_dependency "aws-sdk-dynamodb"
+  spec.add_dependency "aws-sdk-cloudformation"
+  spec.add_dependency "tty-logger"
 
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "byebug"
