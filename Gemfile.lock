@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    dynamocli (0.1.8)
-      aws-sdk-cloudformation
-      aws-sdk-dynamodb
-      ox
-      thor
-      tty-logger
+    dynamocli (0.1.9)
+      aws-sdk-cloudformation (~> 1.93)
+      aws-sdk-dynamodb (~> 1.96)
+      ox (~> 2.14)
+      thor (~> 1.2)
+      tty-logger (~> 0.6)
 
 GEM
   remote: https://rubygems.org/

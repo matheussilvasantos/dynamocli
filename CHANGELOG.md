@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.9] - 2024-01-14
+### Fixed
+- Fix erase command.
+
+### Changed
+- Update gems and more.
+
 ## [0.1.8] - 2020-08-18
 ### Changed
 - Update Rack.

@@ -22,11 +22,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = ">= 2.4"
 
-  spec.add_dependency "thor"
-  spec.add_dependency "ox"
-  spec.add_dependency "aws-sdk-dynamodb"
-  spec.add_dependency "aws-sdk-cloudformation"
-  spec.add_dependency "tty-logger"
+  spec.add_dependency "thor", "~> 1.2"
+  spec.add_dependency "ox", "~> 2.14"
+  spec.add_dependency "aws-sdk-dynamodb", "~> 1.96"
+  spec.add_dependency "aws-sdk-cloudformation", "~> 1.93"
+  spec.add_dependency "tty-logger", "~> 0.6"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 13.0"
